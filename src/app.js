@@ -23,7 +23,7 @@ app.use("/api/admin", UserRouter)
 // Product Route 
 app.use("/api/products", productRouter)
 
-// Order Route Declaration
+// Order Route 
 app.use("/api/order", orderRouter)
 
 export { app }
