@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(express.static("public"))
 
-// User Route Declaration
+// User Route
 app.use("/api/admin", UserRouter)
 
 // Product Route Declaration
