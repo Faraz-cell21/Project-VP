@@ -20,7 +20,7 @@ app.use(express.static("public"))
 // User Route
 app.use("/api/admin", UserRouter)
 
-// Product Route Declaration
+// Product Route 
 app.use("/api/products", productRouter)
 
 // Order Route Declaration
