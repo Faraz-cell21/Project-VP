@@ -1,7 +1,6 @@
 import express from "express"
 import { verifyJWT } from "../middlewares/auth.middleware.js"
 import { createOrder, getOrderById, getAllOrders, updateOrderStatus } from "../controllers/cart.controller.js"
-import { get } from "mongoose"
 
 const router = express.Router()
 
@@ -9,6 +8,6 @@ const router = express.Router()
 router.route("/").post(createOrder)
 
 // Protected Routes
-router.route("/:orderId/").post(verifyJWT, get)
+router.route("/:orderId/").post(verifyJWT, getOrderById)
 
 export default router

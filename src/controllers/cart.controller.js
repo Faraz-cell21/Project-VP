@@ -5,13 +5,24 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { ApiError } from "../utils/ApiError.js"
 
 const createOrder = asyncHandler(async (req, res) => {
-    const { fullName, email, phoneNo, address, city, province, postalCode, paymentMethod = "cod", deliveryNotes, items } = req.body
+    const {
+        fullName,
+        email,
+        phoneNo,
+        address,
+        city,
+        province,
+        postalCode,
+        paymentMethod = "cod",
+        deliveryNotes,
+        items
+    } = req.body
 
-    if(!fullName || !email || !phoneNo || !address?.street || !city || !province || !postalCode){
+    if (!fullName || !email || !phoneNo || !address?.street || !city || !province || !postalCode) {
         throw new ApiError(400, "Please fill all required shipping information")
     }
 
-    if(!items || Array.isArray(items) || items.length == 0){
+    if (!items || !Array.isArray(items) || items.length === 0) {
         throw new ApiError(400, "Cart cannot be empty")
     }
 
@@ -19,21 +30,21 @@ const createOrder = asyncHandler(async (req, res) => {
     const validatedItems = []
     const productUpdates = []
 
-    for(const item of items){
-        if(!item.product || item.quantity){
+    for (const item of items) {
+        if (!item.product || item.quantity === undefined) {
             throw new ApiError(400, "Each item must have product ID and quantity")
         }
 
         const product = await Product.findById(item.product)
-        if(!product){
+        if (!product) {
             throw new ApiError(404, `Product ${item.product} not found`)
         }
 
-        if(product.inStock !== "Available"){
+        if (product.inStock !== "Available") {
             throw new ApiError(400, `${product.name} is currently out of stock`)
         }
 
-        if(item.quantity <= 0){
+        if (item.quantity <= 0) {
             throw new ApiError(400, `Invalid quantity for ${product.name}`)
         }
 
@@ -50,16 +61,11 @@ const createOrder = asyncHandler(async (req, res) => {
 
         productUpdates.push({
             updateOne: {
-                filter: {
-                    _id: product._id
-                },
-                update: {
-                    $inc: {
-                        stock: -item.quantity
-                    }
-                }
+                filter: { _id: product._id },
+                update: { $inc: { stock: -item.quantity } }
             }
-        })
+        });
+
     }
 
     const order = await Cart.create({
@@ -73,19 +79,19 @@ const createOrder = asyncHandler(async (req, res) => {
         paymentMethod,
         deliveryNotes,
         items: validatedItems,
+        total,
         sessionId: !req.user ? req.sessionID : undefined
     })
 
-    if(productUpdates.length > 0){
+    if (productUpdates.length > 0) {
         await Product.bulkWrite(productUpdates)
     }
-
-    // Will add email and sms notification here
 
     return res.status(200).json(
         new ApiResponse(200, order, "Order retrieved successfully")
     )
 })
+
 
 const getOrderById = asyncHandler(async (req, res) => {
     const order = await Cart.findById(req.params.orderId)
