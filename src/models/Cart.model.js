@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2"
 
 const cartSchema = new mongoose.Schema({
     fullName: {
@@ -74,8 +75,7 @@ const cartSchema = new mongoose.Schema({
             type: Number,
             required: true,
             min: 0
-        },
-        _id: false 
+        }, 
     }],
     total: {
         type: Number,
@@ -90,5 +90,7 @@ const cartSchema = new mongoose.Schema({
     timestamps: true
 }
 )
+
+cartSchema.plugin(mongoosePaginate);
 
 export const Cart = mongoose.model("Cart", cartSchema)

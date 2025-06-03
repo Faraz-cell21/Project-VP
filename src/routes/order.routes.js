@@ -8,6 +8,10 @@ const router = express.Router()
 router.route("/").post(createOrder)
 
 // Protected Routes
-router.route("/:orderId/").post(verifyJWT, getOrderById)
+router.route("/admin").get(verifyJWT, getAllOrders)
+router.route("/:orderId").get(verifyJWT, getOrderById)
+router.route("/:orderId/status").patch(verifyJWT, updateOrderStatus)
+
+
 
 export default router

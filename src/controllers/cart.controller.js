@@ -103,7 +103,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 
     const isOwner = (
         (req.user && order.userId?.equals(req.user._id)) || 
-        (!req.user && order.sessionId === req.sessionID)
+        (order.sessionId === req.sessionID)
     );
 
     if (!isOwner && req.user?.role !== 'admin') {
