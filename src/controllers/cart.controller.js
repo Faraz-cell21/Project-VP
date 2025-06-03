@@ -11,7 +11,7 @@ const createOrder = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Please fill all required shipping information")
     }
 
-    if(!items ||Array.isArray(items) || items.length == 0){
+    if(!items || Array.isArray(items) || items.length == 0){
         throw new ApiError(400, "Cart cannot be empty")
     }
 

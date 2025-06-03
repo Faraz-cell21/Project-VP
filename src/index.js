@@ -1,3 +1,5 @@
+//All these imports are for dotenv to work in specific file or else its breaking the code
+
 import dotenv from "dotenv";
 dotenv.config({
     path: "../.env"
