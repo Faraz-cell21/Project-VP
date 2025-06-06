@@ -1,4 +1,9 @@
 //All these imports are for dotenv to work in specific file or else its breaking the code
+import cors from "cors"
+app.use(cors({
+    origin: "http://localhost:5173", 
+    credentials: true              
+}));
 
 import dotenv from "dotenv";
 dotenv.config({
